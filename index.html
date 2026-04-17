@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PortScan — Network Intelligence</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="scan-line"></div>
+
+  <div class="app-shell">
+
+    <header class="header">
+      <div class="logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">PORT<span class="logo-accent">SCAN</span></span>
+        <span class="logo-bracket">]</span>
+      </div>
+      <div class="header-right">
+        <span class="disclaimer-badge">⚠ Authorized Systems Only</span>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">☀</button>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <section class="panel control-panel">
+        <div class="panel-label">SCAN CONFIG</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="field-label" for="target">TARGET HOST</label>
+            <div class="input-wrapper">
+              <span class="input-icon">⬡</span>
+              <input type="text" id="target" class="field-input" placeholder="192.168.1.1 or example.com" />
+            </div>
+          </div>
+
+          <div class="form-group port-group">
+            <label class="field-label">PORT RANGE</label>
+            <div class="port-row">
+              <div class="input-wrapper half">
+                <span class="input-icon">#</span>
+                <input type="number" id="portStart" class="field-input" placeholder="1" min="0" max="65535" value="1"/>
+              </div>
+              <span class="port-separator">→</span>
+              <div class="input-wrapper half">
+                <span class="input-icon">#</span>
+                <input type="number" id="portEnd" class="field-input" placeholder="1024" min="0" max="65535" value="1024"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">SCAN MODE</label>
+            <div class="toggle-row">
+              <label class="switch-label">
+                <input type="checkbox" id="useCommon" />
+                <span class="switch-track"></span>
+                <span class="switch-text">Top Common Ports</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-wrap" id="progressWrap" style="display:none;">
+          <div class="progress-label">SCANNING <span id="progressTarget"></span></div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-status" id="progressStatus">Initializing...</div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-scan" id="scanBtn">
+            <span class="btn-icon">▶</span>
+            <span>INITIATE SCAN</span>
+          </button>
+          <button class="btn-export" id="exportBtn" style="display:none;">
+            <span>⬇ EXPORT</span>
+          </button>
+        </div>
+
+        <div class="error-box" id="errorBox" style="display:none;"></div>
+      </section>
+
+      <div class="stats-bar" id="statsBar" style="display:none;">
+        <div class="stat"><span class="stat-label">TARGET</span><span class="stat-value" id="statTarget">—</span></div>
+        <div class="stat"><span class="stat-label">IP</span><span class="stat-value" id="statIp">—</span></div>
+        <div class="stat"><span class="stat-label">SCANNED</span><span class="stat-value" id="statScanned">—</span></div>
+        <div class="stat"><span class="stat-label">OPEN</span><span class="stat-value open-val" id="statOpen">—</span></div>
+        <div class="stat"><span class="stat-label">TIME</span><span class="stat-value" id="statTime">—</span></div>
+      </div>
+
+      <section class="panel results-panel" id="resultsPanel" style="display:none;">
+        <div class="panel-header">
+          <div class="panel-label">SCAN RESULTS</div>
+          <div class="filter-btns">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="open">OPEN</button>
+            <button class="filter-btn" data-filter="closed">CLOSED</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="results-table" id="resultsTable">
+            <thead>
+              <tr>
+                <th>PORT</th>
+                <th>SERVICE</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <span>⚠ DISCLAIMER: Use this tool only on systems you own or have explicit authorization to test. Unauthorized port scanning may be illegal.</span>
+    </footer>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
